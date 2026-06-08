@@ -1,66 +1,162 @@
-# 📝 Expense Tracker App (Python CLI)
+# 💰 Expense Tracker (CustomTkinter)
 
-A simple command-line Expense Tracker application built using Python.  
-It allows users to add expenses, view all expenses, filter expenses by month, and calculate category-wise totals.
+A modern desktop Expense Tracker application built with **Python** and **CustomTkinter**.
 
----
-
-## 🚀 Features
-
-- 💰 Add new expenses
-- 📋 View all expenses
-- 📅 View expenses by month and year
-- 📊 Calculate total spending by category
-- 🕒 Automatically stores date and time
-- 🖥️ Simple CLI-based interface
+This application helps users manage their daily expenses with a clean graphical interface and persistent JSON-based storage.
 
 ---
 
-## 🛠️ Technologies Used
+# 🚀 Features
 
-- Python 3
-- Datetime Module (`datetime`)
-- Command Line Interface (CLI)
+* ➕ Add new expenses
+* 📋 View all recorded expenses
+* ✏️ Edit existing expenses
+* ❌ Delete expenses
+* 📅 Filter expenses by Month and Year
+* 📊 View category-wise spending totals
+* 💰 Display total spending automatically
+* 💾 Persistent data storage using JSON
+* 🎨 Modern GUI built with CustomTkinter
+* 🔄 Real-time updates without restarting the application
 
 ---
 
-## 📁 Project Structure
+# 🛠️ Technologies Used
 
+* Python
+* CustomTkinter
+* Tkinter
+* JSON
+* Datetime
+* OS Module
+
+---
+
+# 📂 Project Structure
+
+```text
 expense-tracker/
 │
-├── main.py        # Main application file
-└── README.md      # Project documentation
+├── main.py
+├── expenses.json
+└── README.md
+```
 
 ---
 
-## 📌 Expense Details Stored
+# 📸 Application Features
 
-Each expense contains:
+### Add Expense
 
-- Amount
-- Category
-- Date
-- Time
-- Month
-- Year
+Users can enter:
+
+* Expense Amount
+* Expense Category
+
+and save the expense instantly.
+
+### View Expenses
+
+All saved expenses are displayed in a list with:
+
+* Date
+* Category
+* Amount
+
+### Edit Expense
+
+Modify existing expense records through a popup window.
+
+### Delete Expense
+
+Remove selected expenses from the tracker.
+
+### Monthly Filter
+
+View expenses for a specific month and year.
+
+### Category Analysis
+
+Calculate total spending for a particular category.
+
+### Total Spending
+
+Displays the total amount spent across all recorded expenses.
 
 ---
 
-## 🧠 Concepts Used
+# 💾 Data Storage
 
-- Functions
-- Lists
-- Dictionaries
-- Loops
-- Conditional Statements
-- Match-Case
-- Datetime Formatting (`strftime`)
+All expense data is stored locally in:
+
+```text
+expenses.json
+```
+
+Example:
+
+```json
+[
+    {
+        "amount": 250,
+        "category": "Food",
+        "date": "08-06-2026",
+        "time": "14:30:20",
+        "month": "June",
+        "year": "2026"
+    }
+]
+```
 
 ---
- 
-## 🔮 Future Improvements
-💾 Save expenses permanently using files/database
-❌ Delete expenses feature
-📈 Monthly expense reports
-⚠️ Budget warning system
-🖼️ GUI version using Tkinter
+
+# ▶️ Installation
+
+Clone the repository:
+
+```bash
+git clone <your-repository-url>
+```
+
+Navigate to the project folder:
+
+```bash
+cd expense-tracker
+```
+
+Install CustomTkinter:
+
+```bash
+pip install customtkinter
+```
+
+Run the application:
+
+```bash
+python main.py
+```
+
+---
+
+# 🎯 Future Improvements
+
+* 📈 Expense charts and graphs
+* 📤 Export data to CSV
+* 🔍 Search expenses
+* 🌙 Light/Dark theme switch
+* 📊 Monthly summary dashboard
+
+---
+
+# 👨‍💻 Author
+
+Aryan
+
+Built as a Python GUI project to practice:
+
+* File Handling
+* JSON
+* Tkinter / CustomTkinter
+* GUI Design
+* CRUD Operations
+* Data Management
