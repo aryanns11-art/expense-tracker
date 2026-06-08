@@ -138,7 +138,7 @@ def delete_expense():
         deleted = expenses.pop(number - 1)
 
         save_expenses()
-        print(f"Deleted: {deleted['category']}")
+        print(f"Deleted Expense: {deleted['category']} - {deleted['amount']}")
 
     except ValueError:
         print("Invalid input.")
