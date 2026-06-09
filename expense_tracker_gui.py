@@ -5,38 +5,59 @@ from tkinter import Listbox
 import customtkinter as ctk
 from tkinter import messagebox
 
-FILE_NAME = "expenses.json"
+FILE = "expenses.json"
+CATEGORY_FILE = "categories.json"
 
 expenses = []
 
 def save_expenses():
-    with open(FILE_NAME, "w") as file:
+    with open(FILE, "w") as file:
         json.dump(expenses, file, indent=4)     #json.dump() ->  Converts Python data → JSON file | indent=4 -> Makes JSON readable
+
+def save_categories():
+    with open(CATEGORY_FILE, "w") as file:
+        json.dump(categories, file, indent=4)
 
 #--------------------------------------------------------------------------------------------------------------------------------------------
 
 def load_expenses():
     global expenses
 
-    if os.path.exists(FILE_NAME):
+    if os.path.exists(FILE):
 
         try:
-            with open(FILE_NAME, "r") as file:
+            with open(FILE, "r") as file:
                 expenses = json.load(file)          # Reads JSON data from the file and converts it into Python objects.
 
         except json.JSONDecodeError:
             expenses = []
 
+def load_categories():
+    global categories
+
+    if os.path.exists(CATEGORY_FILE):
+
+        try:
+            with open(CATEGORY_FILE, "r") as file:
+                categories = json.load(file)
+
+        except json.JSONDecodeError:
+            categories = []
+
+    else:
+        categories = []            
+
 #--------------------------------------------------------------------------------------------------------------------------------------------
 
 load_expenses()
+load_categories()
 
 #----------------------------------------------------Frames----------------------------------------------------------------------------------------
 
 app = ctk.CTk()
 app.title("Expense Tracker")
 app.geometry("700x750")
-app.resizable(False,False)
+#app.resizable(False,False)
 
 title = ctk.CTkLabel(app,text="Expense Tracker",font=("Arial", 28, "bold"))
 title.pack(pady=20)
@@ -64,10 +85,45 @@ category_frame.pack(pady=10)
 #---------------------------------------Input Frame-----------------------------------
 
 amount_entry = ctk.CTkEntry(input_frame,placeholder_text="Enter Amount",width=250)
-amount_entry.pack(fill="both",padx=5,pady=10)
+amount_entry.pack(fill="both", padx=5, pady=10)
 
-category_entry = ctk.CTkEntry(input_frame,placeholder_text = "Enter Category" , width = 250)
-category_entry.pack(fill="both",padx=5,pady=10)
+category_entry = ctk.CTkEntry(input_frame,placeholder_text="Add New Category",width=250)
+category_entry.pack(fill="both", padx=5, pady=5)
+
+category_dropdown = ctk.CTkOptionMenu(input_frame,values=["Select Category"] + categories,width=250)
+category_dropdown.set("Select Category")
+category_dropdown.pack(fill="x", padx=5, pady=5)
+
+def add_category():
+
+    category = category_entry.get().strip()
+
+    if category == "":
+        messagebox.showwarning(
+            "Warning",
+            "Please enter a category."
+        )
+        return
+
+    if category in categories:
+        messagebox.showwarning(
+            "Warning",
+            "Category already exists."
+        )
+        return
+
+    categories.append(category)
+    save_categories()
+    category_dropdown.configure(values=["Selct Category"]+categories)
+    category_entry.delete(0, "end")
+
+    messagebox.showinfo(
+        "Success",
+        f"'{category}' added."
+    )
+
+add_category_button = ctk.CTkButton(input_frame,text="Add Category",command=add_category)
+add_category_button.pack(pady=5)
 
 #-----------------------------------Add Expense-------------------------------------------------------------
 
@@ -75,11 +131,21 @@ def add_expense():
 
     try:
         amount = float(amount_entry.get())
+        category = category_dropdown.get()
+    
     except ValueError:
         messagebox.showwarning("Warning","Pls enter a valid amount")
         return
 
-    category = category_entry.get()
+    category = category_dropdown.get()
+
+    if category == "Select Category":
+        messagebox.showwarning(
+        "Warning",
+        "Please select a category."
+        )
+        return
+
     now = dt.datetime.now()
 
     expense = {
@@ -98,11 +164,11 @@ def add_expense():
     messagebox.showinfo("Success","Expense Added")
     
     amount_entry.delete(0, "end")
-    category_entry.delete(0, "end")
+    category_dropdown.set("Select Category")
     amount_entry.focus()
 
 amount_entry.bind("<Return>",lambda event: category_entry.focus())
-category_entry.bind("<Return>",lambda event: add_expense())
+category_entry.bind("<Return>",lambda event: add_category())
 
 add_button = ctk.CTkButton(input_frame,text="Add Expense",command=add_expense, width=200,height=40)
 add_button.pack(pady=15)
@@ -189,6 +255,10 @@ def edit_expense():
     edit_window = ctk.CTkToplevel(app)    # Create popup window
     edit_window.title("Edit Expense")
     edit_window.geometry("300x200")
+    
+    edit_window.transient(app)   # Associate with main window
+    edit_window.grab_set()       # Make it modal
+    edit_window.focus_force()    # Bring to front
 
     amount_edit = ctk.CTkEntry(edit_window)   #Entry of new values
     amount_edit.pack(pady=10)
@@ -229,9 +299,10 @@ edit_button = ctk.CTkButton(button_frame,text="Edit Expense",command=edit_expens
 edit_button.pack(side="left",padx=10)
 
 #-------------------------------------------------------Monthly Expense---------------------------------------------------------------------------------------
-month_label = ctk.CTkLabel(month_frame,text="Filter Expenses")
 
+month_label = ctk.CTkLabel(month_frame,text="Filter Expenses")
 month_label.pack(side="left", padx=10)
+
 month_entry = ctk.CTkEntry(month_frame, placeholder_text="Month")
 year_entry = ctk.CTkEntry(month_frame, placeholder_text="Year")
 
@@ -262,15 +333,13 @@ show_all_button = ctk.CTkButton(month_frame,text="Show All",command=view_all_exp
 show_all_button.pack(side="left", padx=5)
 
 #-------------------------------------------------------Category Expense---------------------------------------------------------------------------------------
-category_label = ctk.CTkLabel(category_frame,text="Category Analysis")
 
+category_label = ctk.CTkLabel(category_frame,text="Category Analysis")
 category_label.pack(side="left", padx=10)
-category_total_entry = ctk.CTkEntry(category_frame,placeholder_text="Enter Category")
-category_total_entry.pack(side="left",padx=5,pady=5)
 
 def category_total():
     
-    category = category_total_entry.get()
+    category = category_dropdown.get()
 
     if not category:
      messagebox.showwarning("Warning","Please enter a category.")
