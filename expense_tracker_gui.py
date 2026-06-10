@@ -4,6 +4,8 @@ import datetime as dt
 from tkinter import Listbox
 import customtkinter as ctk
 from tkinter import messagebox
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 FILE = "expenses.json"
 CATEGORY_FILE = "categories.json"
@@ -56,21 +58,38 @@ load_categories()
 
 app = ctk.CTk()
 app.title("Expense Tracker")
-app.geometry("700x750")
+app.geometry("1000x750")
 #app.resizable(False,False)
 
 title = ctk.CTkLabel(app,text="Expense Tracker",font=("Arial", 28, "bold"))
 title.pack(pady=20)
-summary_frame = ctk.CTkFrame(app)
+
+main_frame = ctk.CTkFrame(app)
+main_frame.pack(fill="both", expand=True, padx=10, pady=5)
+ 
+left_frame = ctk.CTkFrame(main_frame)
+left_frame.pack_propagate(False)
+
+right_frame = ctk.CTkFrame(main_frame)
+
+main_frame.columnconfigure(0, weight=4)  # LEFT bigger
+main_frame.columnconfigure(1, weight=3)  # RIGHT bigger than before
+
+main_frame.rowconfigure(0, weight=1)
+
+left_frame.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
+right_frame.grid(row=0, column=1, sticky="nsew", padx=5, pady=5)
+
+summary_frame = ctk.CTkFrame(left_frame)
 summary_frame.pack(fill="x", padx=10, pady=5)
 
-input_frame = ctk.CTkFrame(app)
+input_frame = ctk.CTkFrame(left_frame)
 input_frame.pack(fill="x", padx=10, pady=5)
 
-list_frame = ctk.CTkFrame(app)
+list_frame = ctk.CTkFrame(left_frame)
 list_frame.pack(fill="x", padx=10, pady=5)
 
-action_frame = ctk.CTkFrame(app)
+action_frame = ctk.CTkFrame(left_frame)
 action_frame.pack(fill="x", padx=10, pady=5)
 
 button_frame = ctk.CTkFrame(action_frame)
@@ -82,6 +101,10 @@ month_frame.pack(pady=10)
 category_frame = ctk.CTkFrame(action_frame)
 category_frame.pack(pady=10)
 
+graph_title = ctk.CTkLabel(right_frame, text="Analytics", font=("Arial", 18, "bold"))
+graph_title.pack(pady=10)
+
+current_canvas = None
 #---------------------------------------Input Frame-----------------------------------
 
 amount_entry = ctk.CTkEntry(input_frame,placeholder_text="Enter Amount",width=250)
@@ -371,5 +394,47 @@ category_total_button.pack(side="left",padx=5,pady=5)
 
 #----------------------------------------------------------------------------------------------------------------------------------------------
 
+def show_category_chart():
+    global current_canvas
+
+    category_data = {}
+
+    for expense in expenses:
+        cat = expense["category"]
+        category_data[cat] = category_data.get(cat, 0) + expense["amount"]
+
+    if not category_data:
+        messagebox.showwarning("Warning", "No data to show.")
+        return
+
+    if current_canvas is not None:
+        current_canvas.get_tk_widget().pack_forget()
+        current_canvas.get_tk_widget().destroy()
+
+    fig, ax = plt.subplots(figsize=(4,3))
+    ax.bar(category_data.keys(), category_data.values())
+
+    ax.set_title("Expenses by Category")
+    ax.set_ylabel("Amount")
+
+    current_canvas = FigureCanvasTkAgg(fig, master=right_frame)
+    current_canvas.draw()
+    current_canvas.get_tk_widget().pack(fill="both", expand=True, pady=10)
+
+    
+graph_button = ctk.CTkButton(right_frame,text="Show Category Chart",command=show_category_chart)
+graph_button.pack(pady=10)
+
+#---------------------------------------------------------------------------------------------------------------------------------------------    
 view_all_expenses()
+
+def on_closing():
+    try:
+        app.quit()
+        app.destroy()
+    except:
+        pass
+
+app.protocol("WM_DELETE_WINDOW", on_closing)
+
 app.mainloop()
