@@ -1,162 +1,131 @@
-# 💰 Expense Tracker (CustomTkinter)
+# 💰 Expense Tracker
 
-A modern desktop Expense Tracker application built with **Python** and **CustomTkinter**.
-
-This application helps users manage their daily expenses with a clean graphical interface and persistent JSON-based storage.
-
----
+A modern desktop Expense Tracker application built using **Python**, **CustomTkinter**, and **Matplotlib**. It helps users manage expenses, organize spending categories, track monthly expenses, and visualize financial data through interactive charts.
 
 # 🚀 Features
 
-* ➕ Add new expenses
-* 📋 View all recorded expenses
-* ✏️ Edit existing expenses
-* ❌ Delete expenses
-* 📅 Filter expenses by Month and Year
-* 📊 View category-wise spending totals
-* 💰 Display total spending automatically
-* 💾 Persistent data storage using JSON
-* 🎨 Modern GUI built with CustomTkinter
-* 🔄 Real-time updates without restarting the application
-
----
+- 💸 Add new expenses
+- 🗂️ Create and manage custom categories
+- 📋 View all recorded expenses
+- ✏️ Edit existing expenses
+- 🗑️ Delete expenses
+- 📅 Filter expenses by month and year
+- 📊 Calculate category-wise spending totals
+- 📈 Visualize expenses using bar charts
+- 💾 Store data locally using JSON files
+- 🎨 Modern GUI built with CustomTkinter
+- 🕒 Automatic date and time tracking
 
 # 🛠️ Technologies Used
 
-* Python
-* CustomTkinter
-* Tkinter
-* JSON
-* Datetime
-* OS Module
-
----
+- Python
+- CustomTkinter
+- Tkinter
+- JSON
+- Matplotlib
 
 # 📂 Project Structure
 
 ```text
 expense-tracker/
 │
-├── main.py
+├── expense_tracker.py
 ├── expenses.json
+├── categories.json
 └── README.md
 ```
 
----
+# 📸 Application Modules
 
-# 📸 Application Features
+## Expense Management
 
-### Add Expense
+- Add expenses with amount and category
+- Edit existing expenses
+- Delete expenses
+- View complete expense history
 
-Users can enter:
+## Category Management
 
-* Expense Amount
-* Expense Category
+- Create custom categories
+- Prevent duplicate categories
+- Analyze category-wise spending
 
-and save the expense instantly.
+## Analytics Dashboard
 
-### View Expenses
+- Display total spending summary
+- Category expenditure analysis
+- Interactive bar chart visualization
 
-All saved expenses are displayed in a list with:
+## Monthly Filtering
 
-* Date
-* Category
-* Amount
+- Filter expenses by month and year
+- View spending records for specific periods
 
-### Edit Expense
+# 📊 Data Storage
 
-Modify existing expense records through a popup window.
+The application stores data locally using JSON files.
 
-### Delete Expense
+### Example Expense Record
 
-Remove selected expenses from the tracker.
-
-### Monthly Filter
-
-View expenses for a specific month and year.
-
-### Category Analysis
-
-Calculate total spending for a particular category.
-
-### Total Spending
-
-Displays the total amount spent across all recorded expenses.
-
----
-
-# 💾 Data Storage
-
-All expense data is stored locally in:
-
-```text
-expenses.json
+```json
+{
+    "amount": 500,
+    "category": "Food",
+    "date": "10-06-2026",
+    "time": "14:30:22",
+    "month": "June",
+    "year": "2026"
+}
 ```
 
-Example:
+### Example Categories
 
 ```json
 [
-    {
-        "amount": 250,
-        "category": "Food",
-        "date": "08-06-2026",
-        "time": "14:30:20",
-        "month": "June",
-        "year": "2026"
-    }
+    "Food",
+    "Travel",
+    "Shopping"
 ]
 ```
 
----
-
 # ▶️ Installation
 
-Clone the repository:
+## Clone Repository
 
 ```bash
-git clone <your-repository-url>
-```
-
-Navigate to the project folder:
-
-```bash
+git clone https://github.com/your-username/expense-tracker.git
 cd expense-tracker
 ```
 
-Install CustomTkinter:
+## Install Dependencies
 
 ```bash
-pip install customtkinter
+pip install customtkinter matplotlib pillow
 ```
 
-Run the application:
+## Run Application
 
 ```bash
-python main.py
+python expense_tracker.py
 ```
-
----
 
 # 🎯 Future Improvements
 
-* 📈 Expense charts and graphs
-* 📤 Export data to CSV
-* 🔍 Search expenses
-* 🌙 Light/Dark theme switch
-* 📊 Monthly summary dashboard
-
----
+- 🔍 Search expenses
+- 📄 Export reports to PDF or Excel
+- 🌙 Dark/Light mode toggle
+- 📉 Monthly trend analytics
+- 🏦 Budget planning system
+- 🔐 User authentication
 
 # 👨‍💻 Author
 
-Aryan
+**Aryan**
 
-Built as a Python GUI project to practice:
+Diploma Student | Python Developer | Tech Enthusiast
 
-* File Handling
-* JSON
-* Tkinter / CustomTkinter
-* GUI Design
-* CRUD Operations
-* Data Management
+Passionate about software development, machine learning, and building practical applications using Python.
+
+# ⭐ Support
+
+If you found this project useful, consider giving it a star on GitHub and sharing it with others.
